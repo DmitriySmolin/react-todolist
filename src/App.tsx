@@ -3,6 +3,8 @@ import './App.css';
 import { Todolist } from './Todolist';
 import { v1 } from 'uuid';
 import { AddItemForm } from './AddItemForm';
+import { AppBar, Toolbar, IconButton, Typography, Button, Container, Grid, Paper } from '@material-ui/core';
+import { Menu } from '@material-ui/icons';
 
 export type TaskType = {
   id: string;
@@ -125,27 +127,46 @@ function App() {
     }
 
     return (
-      <Todolist
-        key={tl.id}
-        todolistId={tl.id}
-        title={tl.title}
-        tasks={tasksForTodoList}
-        removeTask={removeTask}
-        changeFilter={changeFilter}
-        addTask={addTask}
-        changeTaskStatus={changeTaskStatus}
-        filter={tl.filter}
-        removeTodolist={removeTodolist}
-        onChange={onChange}
-        changeTodolistTitle={changeTodolistTitle}
-      />
+      <Grid item>
+        <Paper style={{ padding: '10px' }}>
+          <Todolist
+            key={tl.id}
+            todolistId={tl.id}
+            title={tl.title}
+            tasks={tasksForTodoList}
+            removeTask={removeTask}
+            changeFilter={changeFilter}
+            addTask={addTask}
+            changeTaskStatus={changeTaskStatus}
+            filter={tl.filter}
+            removeTodolist={removeTodolist}
+            onChange={onChange}
+            changeTodolistTitle={changeTodolistTitle}
+          />
+        </Paper>
+      </Grid>
     );
   });
 
   return (
     <div className="App">
-      <AddItemForm addItem={addTodolist} />
-      {jsxTodolists}
+      <AppBar position="static">
+        <Toolbar>
+          <IconButton edge="start" color="inherit" aria-label="menu">
+            <Menu />
+          </IconButton>
+          <Typography variant="h6">News</Typography>
+          <Button color="inherit">Login</Button>
+        </Toolbar>
+      </AppBar>
+      <Container fixed>
+        <Grid container style={{ padding: '20px' }}>
+          <AddItemForm addItem={addTodolist} />
+        </Grid>
+        <Grid spacing={3} container>
+          {jsxTodolists}
+        </Grid>
+      </Container>
     </div>
   );
 }
