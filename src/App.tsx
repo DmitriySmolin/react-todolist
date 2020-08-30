@@ -83,7 +83,7 @@ function App() {
     }
   };
 
-  const onChange = (id: string, newTitle: string, todolistId: string) => {
+  const changeTaskTitle = (id: string, newTitle: string, todolistId: string) => {
     let todolistTasks = tasks[todolistId];
     let task = todolistTasks.find((t) => t.id === id);
     if (task) {
@@ -149,7 +149,7 @@ function App() {
             changeTaskStatus={changeTaskStatus}
             filter={tl.filter}
             removeTodolist={removeTodolist}
-            onChange={onChange}
+            changeTaskTitle={changeTaskTitle}
             changeTodolistTitle={changeTodolistTitle}
           />
         </Paper>
