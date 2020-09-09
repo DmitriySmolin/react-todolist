@@ -1,5 +1,5 @@
 import React from "react";
-import { TaskType, FilterValueType } from "./App";
+import { TaskType, FilterValueType } from "./AppWithRedux";
 import { AddItemForm } from "./AddItemForm";
 import { EditableSpan } from "./EditableSpan";
 import { IconButton, Button, Checkbox } from "@material-ui/core";
@@ -10,7 +10,7 @@ type PropsType = {
   title: string;
   tasks: Array<TaskType>;
   removeTask: (id: string, todolistId: string) => void;
-  changeFilter: (value: FilterValueType, todolistId: string) => void;
+  changeFilter: (todolistId: string, value: FilterValueType) => void;
   addTask: (title: string, todolistId: string) => void;
   changeTaskStatus: (id: string, isDone: boolean, todolistId: string) => void;
   filter: FilterValueType;
@@ -43,13 +43,13 @@ export function Todolist(props: PropsType) {
   });
 
   const onAllClickHandler = () => {
-    props.changeFilter("all", props.todolistId);
+    props.changeFilter(props.todolistId, "all");
   };
   const onActiveClickHandler = () => {
-    props.changeFilter("active", props.todolistId);
+    props.changeFilter(props.todolistId, "active");
   };
   const onCompletedClickHandler = () => {
-    props.changeFilter("completed", props.todolistId);
+    props.changeFilter(props.todolistId, "completed");
   };
 
   const addTask = (title: string) => {
@@ -57,7 +57,7 @@ export function Todolist(props: PropsType) {
   };
 
   const changeTodolistTitle = (newTitle: string) => {
-    props.changeTodolistTitle(newTitle, props.todolistId);
+    props.changeTodolistTitle(props.todolistId, newTitle);
   };
 
   const onRemoveTodolist = () => {
@@ -75,11 +75,7 @@ export function Todolist(props: PropsType) {
       <AddItemForm addItem={addTask} />
       <div>{jsxElements}</div>
       <div>
-        <Button
-          color={"default"}
-          variant={props.filter === "all" ? "outlined" : "text"}
-          onClick={onAllClickHandler}
-        >
+        <Button color={"default"} variant={props.filter === "all" ? "outlined" : "text"} onClick={onAllClickHandler}>
           All
         </Button>
         <Button

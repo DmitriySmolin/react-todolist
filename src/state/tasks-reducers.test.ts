@@ -1,9 +1,11 @@
 import { tasksReducer, removeTaskAC, addTaskAC, changeTaskStatusAC, changeTaskTitleAC } from "./tasks-reducer";
-import { TaskStateType } from "../App";
-import { addTodolistAC, removeTodolistAC } from "./todolist-reducer";
+import { addTodolistAC, removeTodolistAC } from "./todolists-reducer";
+import { TaskStateType } from "../AppWithRedux";
+
+let startState: TaskStateType;
 
 test("correct task should be deleted from correct array", () => {
-  const startState: TaskStateType = {
+  startState = {
     todolistId1: [
       { id: "1", title: "CSS", isDone: false },
       { id: "2", title: "JS", isDone: true },
@@ -26,7 +28,7 @@ test("correct task should be deleted from correct array", () => {
 });
 
 test("correct task should be added to correct array", () => {
-  const startState: TaskStateType = {
+  startState = {
     todolistId1: [
       { id: "1", title: "CSS", isDone: false },
       { id: "2", title: "JS", isDone: true },
@@ -51,7 +53,7 @@ test("correct task should be added to correct array", () => {
 });
 
 test("status of specified task should be changed", () => {
-  const startState: TaskStateType = {
+  startState = {
     todolistId1: [
       { id: "1", title: "CSS", isDone: false },
       { id: "2", title: "JS", isDone: true },
@@ -73,7 +75,7 @@ test("status of specified task should be changed", () => {
 });
 
 test("status of specified task should be changed", () => {
-  const startState: TaskStateType = {
+  startState = {
     todolistId1: [
       { id: "1", title: "CSS", isDone: false },
       { id: "2", title: "JS", isDone: true },
@@ -95,7 +97,7 @@ test("status of specified task should be changed", () => {
 });
 
 test("new array should be added when new todolist is added", () => {
-  const startState: TaskStateType = {
+  startState = {
     todolistId1: [
       { id: "1", title: "CSS", isDone: false },
       { id: "2", title: "JS", isDone: true },
@@ -122,7 +124,7 @@ test("new array should be added when new todolist is added", () => {
 });
 
 test("property with todolistId should be deleted", () => {
-  const startState: TaskStateType = {
+  startState = {
     todolistId1: [
       { id: "1", title: "CSS", isDone: false },
       { id: "2", title: "JS", isDone: true },

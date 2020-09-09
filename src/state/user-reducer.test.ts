@@ -1,5 +1,4 @@
 import { userReducer } from "./user-reducer";
-import { FilterValueType } from "../App";
 
 test("user reducer should increment only age", () => {
   const startState = { age: 20, childrenCount: 2, name: "Dimych" };
