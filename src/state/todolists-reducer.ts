@@ -49,7 +49,6 @@ export const todolistsReducer = (
         },
       ];
     case "CHANGE-TODOLIST-TITLE":
-      debugger;
       // let todolist = state.find((tl) => tl.id === action.id);
       // if (todolist) {
       //   todolist.title = action.title;

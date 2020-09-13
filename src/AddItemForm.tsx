@@ -1,21 +1,22 @@
-import React, { useState } from 'react';
-import { TextField, IconButton } from '@material-ui/core';
-import { AddBox } from '@material-ui/icons';
+import React, { useState } from "react";
+import { TextField, IconButton } from "@material-ui/core";
+import { AddBox } from "@material-ui/icons";
 
 export type addItemFormPropsType = {
   addItem: (title: string) => void;
 };
 
-export function AddItemForm(props: addItemFormPropsType) {
-  let [title, setTitle] = useState('');
+export const AddItemForm: React.FC<addItemFormPropsType> = React.memo((props) => {
+  console.log("AddItemForm is called");
+  let [title, setTitle] = useState("");
   let [error, setError] = useState<string | null>(null);
 
   const addItem = () => {
-    if (title.trim() !== '') {
+    if (title.trim() !== "") {
       props.addItem(title);
-      setTitle('');
+      setTitle("");
     } else {
-      setError('Title is required');
+      setError("Title is required");
     }
   };
 
@@ -24,13 +25,16 @@ export function AddItemForm(props: addItemFormPropsType) {
   };
 
   const onKeyPressHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    setError(null);
-    if (e.key === 'Enter') {
-      if (title.trim() !== '') {
+    if (error !== null) {
+      setError(null);
+    }
+
+    if (e.key === "Enter") {
+      if (title.trim() !== "") {
         props.addItem(title);
-        setTitle('');
+        setTitle("");
       } else {
-        setError('Title is required');
+        setError("Title is required");
       }
     }
   };
@@ -38,7 +42,7 @@ export function AddItemForm(props: addItemFormPropsType) {
   return (
     <div>
       <TextField
-        size={'small'}
+        size={"small"}
         variant="outlined"
         type="text"
         value={title}
@@ -53,4 +57,4 @@ export function AddItemForm(props: addItemFormPropsType) {
       </IconButton>
     </div>
   );
-}
+});
