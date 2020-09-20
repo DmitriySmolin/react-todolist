@@ -75,7 +75,6 @@ export const Todolist: React.FC<TodolistPropsType> = React.memo((props) => {
             task={t}
             todolistId={props.todolistId}
             removeTask={props.removeTask}
-            addTask={props.addTask}
             changeTaskStatus={props.changeTaskStatus}
             changeTaskTitle={props.changeTaskTitle}
             key={t.id}

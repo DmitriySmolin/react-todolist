@@ -8,12 +8,11 @@ type TaskPropsType = {
   task: TaskType;
   todolistId: string;
   removeTask: (id: string, todolistId: string) => void;
-  addTask: (title: string, todolistId: string) => void;
   changeTaskStatus: (id: string, isDone: boolean, todolistId: string) => void;
   changeTaskTitle: (id: string, newTitle: string, todolistId: string) => void;
 };
 
-const Task: React.FC<TaskPropsType> = React.memo((props) => {
+export const Task: React.FC<TaskPropsType> = React.memo((props) => {
   const onClickHandler = useCallback(() => {
     props.removeTask(props.task.id, props.todolistId);
   }, [props.removeTask, props.todolistId]);
