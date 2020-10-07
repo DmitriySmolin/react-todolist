@@ -9,24 +9,12 @@ import {
   changeTodolistFilterAC,
   removeTodolistAC,
   addTodolistAC,
+  FilterValueType,
 } from "./state/todolists-reducer";
 import { removeTaskAC, addTaskAC, changeTaskStatusAC, changeTaskTitleAC } from "./state/tasks-reducer";
 import { AppRootStateType } from "./state/store";
 import { useSelector, useDispatch } from "react-redux";
-
-export type TaskType = {
-  id: string;
-  title: string;
-  isDone: boolean;
-};
-
-export type FilterValueType = "all" | "active" | "completed";
-
-export type TodolistType = {
-  id: string;
-  title: string;
-  filter: FilterValueType;
-};
+import { TaskStatuses, TaskType, TodolistType } from "./api/todolists-api";
 
 export type TaskStateType = {
   [key: string]: Array<TaskType>;
@@ -53,8 +41,8 @@ const AppWithRedux = React.memo(() => {
   );
 
   const changeTaskStatus = useCallback(
-    (taskId: string, isDone: boolean, todolistId: string) => {
-      dispatch(changeTaskStatusAC(taskId, isDone, todolistId));
+    (taskId: string, status: TaskStatuses, todolistId: string) => {
+      dispatch(changeTaskStatusAC(taskId, status, todolistId));
     },
     [dispatch]
   );
@@ -74,7 +62,8 @@ const AppWithRedux = React.memo(() => {
   );
 
   const changeFilter = useCallback(
-    (todolistId: string, value: FilterValueType) => {
+    (value: FilterValueType, todolistId: string) => {
+      debugger;
       dispatch(changeTodolistFilterAC(todolistId, value));
     },
     [dispatch]

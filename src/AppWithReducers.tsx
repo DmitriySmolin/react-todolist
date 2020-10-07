@@ -11,145 +11,181 @@ import {
   changeTodolistFilterAC,
   removeTodolistAC,
   addTodolistAC,
+  FilterValueType,
 } from "./state/todolists-reducer";
 import { tasksReducer, removeTaskAC, addTaskAC, changeTaskStatusAC, changeTaskTitleAC } from "./state/tasks-reducer";
+import { TaskPriorities, TaskStatuses, TaskType } from "./api/todolists-api";
 
-// export type TaskType = {
-//   id: string;
-//   title: string;
-//   isDone: boolean;
-// };
+export type TaskStateType = {
+  [key: string]: Array<TaskType>;
+};
 
-// export type FilterValueType = "all" | "active" | "completed";
+function AppWithReducers() {
+  let todolistId1 = v1();
+  let todolistId2 = v1();
 
-// export type TodolistType = {
-//   id: string;
-//   title: string;
-//   filter: FilterValueType;
-// };
+  let [todolists, dispatchToTodolist] = useReducer(todolistsReducer, [
+    {
+      id: todolistId1,
+      title: "What to learn",
+      filter: "all",
+      addedDate: "",
+      order: 0,
+    },
+    {
+      id: todolistId2,
+      title: "What to buy",
+      filter: "all",
+      addedDate: "",
+      order: 0,
+    },
+  ]);
 
-// export type TaskStateType = {
-//   [key: string]: Array<TaskType>;
-// };
+  let [tasks, dispatchToTasks] = useReducer(tasksReducer, {
+    [todolistId1]: [
+      {
+        id: v1(),
+        title: "HTML&CSS",
+        status: TaskStatuses.Completed,
+        todoListId: todolistId1,
+        description: "",
+        startDate: "",
+        deadline: "",
+        addedDate: "",
+        order: 0,
+        priority: TaskPriorities.Low,
+      },
+      {
+        id: v1(),
+        title: "JS",
+        status: TaskStatuses.Completed,
+        todoListId: todolistId1,
+        description: "",
+        startDate: "",
+        deadline: "",
+        addedDate: "",
+        order: 0,
+        priority: TaskPriorities.Low,
+      },
+    ],
 
-// function AppWithReducers() {
-//   let todolist1 = v1();
-//   let todololist2 = v1();
+    [todolistId2]: [
+      {
+        id: v1(),
+        title: "ReactJS",
+        status: TaskStatuses.New,
+        todoListId: todolistId2,
+        description: "",
+        startDate: "",
+        deadline: "",
+        addedDate: "",
+        order: 0,
+        priority: TaskPriorities.Low,
+      },
+      {
+        id: v1(),
+        title: "Rest API",
+        status: TaskStatuses.New,
+        todoListId: todolistId2,
+        description: "",
+        startDate: "",
+        deadline: "",
+        addedDate: "",
+        order: 0,
+        priority: TaskPriorities.Low,
+      },
+    ],
+  });
 
-//   let [todolists, dispatchToTodolist] = useReducer(todolistsReducer, [
-//     {
-//       id: todolist1,
-//       title: "What to learn",
-//       filter: "all",
-//     },
-//     {
-//       id: todololist2,
-//       title: "What to buy",
-//       filter: "all",
-//     },
-//   ]);
+  const removeTask = (taskId: string, todolistId: string) => {
+    dispatchToTasks(removeTaskAC(taskId, todolistId));
+  };
 
-//   let [tasks, dispatchToTasks] = useReducer(tasksReducer, {
-//     [todolist1]: [
-//       { id: v1(), title: "HTML&CSS", isDone: true },
-//       { id: v1(), title: "JS", isDone: true },
-//     ],
+  const addTask = (title: string, todolistId: string) => {
+    dispatchToTasks(addTaskAC(title, todolistId));
+  };
 
-//     [todololist2]: [
-//       { id: v1(), title: "ReactJS", isDone: false },
-//       { id: v1(), title: "Rest API", isDone: false },
-//     ],
-//   });
+  const changeTaskStatus = (taskId: string, status: TaskStatuses, todolistId: string) => {
+    dispatchToTasks(changeTaskStatusAC(taskId, status, todolistId));
+  };
 
-//   const removeTask = (taskId: string, todolistId: string) => {
-//     dispatchToTasks(removeTaskAC(taskId, todolistId));
-//   };
+  const changeTaskTitle = (taskId: string, newTitle: string, todolistId: string) => {
+    dispatchToTasks(changeTaskTitleAC(taskId, newTitle, todolistId));
+  };
 
-//   const addTask = (title: string, todolistId: string) => {
-//     dispatchToTasks(addTaskAC(title, todolistId));
-//   };
+  const changeTodolistTitle = (todolistId: string, newTitle: string) => {
+    dispatchToTodolist(changeTodolistTitleAC(todolistId, newTitle));
+  };
 
-//   const changeTaskStatus = (taskId: string, isDone: boolean, todolistId: string) => {
-//     dispatchToTasks(changeTaskStatusAC(taskId, isDone, todolistId));
-//   };
+  const changeFilter = (value: FilterValueType, todolistId: string) => {
+    dispatchToTodolist(changeTodolistFilterAC(todolistId, value));
+  };
 
-//   const changeTaskTitle = (taskId: string, newTitle: string, todolistId: string) => {
-//     dispatchToTasks(changeTaskTitleAC(taskId, newTitle, todolistId));
-//   };
+  const removeTodolist = (todolistId: string) => {
+    const action = removeTodolistAC(todolistId);
+    dispatchToTodolist(action);
+    dispatchToTasks(action);
+  };
 
-//   const changeTodolistTitle = (todolistId: string, newTitle: string) => {
-//     dispatchToTodolist(changeTodolistTitleAC(todolistId, newTitle));
-//   };
+  const addTodolist = (title: string) => {
+    const action = addTodolistAC(title);
+    dispatchToTodolist(action);
+    dispatchToTasks(action);
+  };
 
-//   const changeFilter = (todolistId: string, value: FilterValueType) => {
-//     dispatchToTodolist(changeTodolistFilterAC(todolistId, value));
-//   };
+  const jsxTodolists = todolists.map((tl) => {
+    let tasksForTodoList = tasks[tl.id];
 
-//   const removeTodolist = (todolistId: string) => {
-//     const action = removeTodolistAC(todolistId);
-//     dispatchToTodolist(action);
-//     dispatchToTasks(action);
-//   };
+    if (tl.filter === "active") {
+      tasksForTodoList = tasks[tl.id].filter((t) => t.status === TaskStatuses.New);
+    }
+    if (tl.filter === "completed") {
+      tasksForTodoList = tasks[tl.id].filter((t) => t.status === TaskStatuses.Completed);
+    }
 
-//   const addTodolist = (title: string) => {
-//     const action = addTodolistAC(title);
-//     dispatchToTodolist(action);
-//     dispatchToTasks(action);
-//   };
+    return (
+      <Grid item>
+        <Paper style={{ padding: "10px" }}>
+          <Todolist
+            key={tl.id}
+            todolistId={tl.id}
+            title={tl.title}
+            tasks={tasksForTodoList}
+            removeTask={removeTask}
+            changeFilter={changeFilter}
+            addTask={addTask}
+            changeTaskStatus={changeTaskStatus}
+            filter={tl.filter}
+            removeTodolist={removeTodolist}
+            changeTaskTitle={changeTaskTitle}
+            changeTodolistTitle={changeTodolistTitle}
+          />
+        </Paper>
+      </Grid>
+    );
+  });
 
-//   const jsxTodolists = todolists.map((tl) => {
-//     let tasksForTodoList = tasks[tl.id];
+  return (
+    <div className="App">
+      <AppBar position="static">
+        <Toolbar>
+          <IconButton edge="start" color="inherit" aria-label="menu">
+            <Menu />
+          </IconButton>
+          <Typography variant="h6">News</Typography>
+          <Button color="inherit">Login</Button>
+        </Toolbar>
+      </AppBar>
+      <Container fixed>
+        <Grid container style={{ padding: "20px" }}>
+          <AddItemForm addItem={addTodolist} />
+        </Grid>
+        <Grid spacing={3} container>
+          {jsxTodolists}
+        </Grid>
+      </Container>
+    </div>
+  );
+}
 
-//     if (tl.filter === "active") {
-//       tasksForTodoList = tasks[tl.id].filter((t) => !t.isDone);
-//     }
-//     if (tl.filter === "completed") {
-//       tasksForTodoList = tasks[tl.id].filter((t) => t.isDone);
-//     }
-
-//     return (
-//       <Grid item>
-//         <Paper style={{ padding: "10px" }}>
-//           <Todolist
-//             key={tl.id}
-//             todolistId={tl.id}
-//             title={tl.title}
-//             tasks={tasksForTodoList}
-//             removeTask={removeTask}
-//             changeFilter={changeFilter}
-//             addTask={addTask}
-//             changeTaskStatus={changeTaskStatus}
-//             filter={tl.filter}
-//             removeTodolist={removeTodolist}
-//             changeTaskTitle={changeTaskTitle}
-//             changeTodolistTitle={changeTodolistTitle}
-//           />
-//         </Paper>
-//       </Grid>
-//     );
-//   });
-
-//   return (
-//     <div className="App">
-//       <AppBar position="static">
-//         <Toolbar>
-//           <IconButton edge="start" color="inherit" aria-label="menu">
-//             <Menu />
-//           </IconButton>
-//           <Typography variant="h6">News</Typography>
-//           <Button color="inherit">Login</Button>
-//         </Toolbar>
-//       </AppBar>
-//       <Container fixed>
-//         <Grid container style={{ padding: "20px" }}>
-//           <AddItemForm addItem={addTodolist} />
-//         </Grid>
-//         <Grid spacing={3} container>
-//           {jsxTodolists}
-//         </Grid>
-//       </Container>
-//     </div>
-//   );
-// }
-
-// export default AppWithReducers;
+export default AppWithReducers;
